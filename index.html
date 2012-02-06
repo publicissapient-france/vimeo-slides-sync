@@ -1,21 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset=utf-8>
-<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript" ></script>
-<script src="http://a.vimeocdn.com/js/froogaloop2.min.js" type="text/javascript" ></script>
+<meta charset="utf-8">
+<title>Demo of vimeo-slides-sync project</title>
+<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="http://a.vimeocdn.com/js/froogaloop2.js" type="text/javascript"></script>
 </head>
 <body>
 <!-- important thing is api=1&player_id=presentation1 -->
-<iframe src="http://player.vimeo.com/video/35533358?api=1&player_id=presentation1&title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" width="460" height="261" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-<div class="slides" id="presentation1-slides">
- <img src="slide1.jpg" timing="00:04">
- <img src="slide2.jpg" timing="00:08">
- <img src="slide3.jpg" timing="00:11">
- <img src="slide4.jpg" timing="00:13">
- <img src="slide5.jpg" timing="00:16">
+<iframe id="presentation1" src="http://player.vimeo.com/video/35533358?api=1&player_id=presentation1&title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" width="460" height="261" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+<div class="presentation1-slides">
+ <img src="mire.jpg" timing="0"/>
+ <img src="slide1.jpg" timing="0:00:04"/>
+ <img src="slide2.jpg" timing="00:08"/>
+ <img src="slide4.jpg" timing="13"/>
+ <img src="slide3.jpg" timing="0:11"/>
+ <img src="slide5.jpg" timing="00:00:16"/>
 </div>
-<script type="text/javascript" >
+<script type="text/javascript">
+$(document).ready(function() {
+	var player = $("#presentation1")[0];
+	$f(player).addEvent('ready', ready);
+	
+	var currentSlideIndex = 0;
+	
+	var time = new RegExp("^((([0-1]?\\d)|([2][0-3])):([0-5]\\d):([0-5]\\d))|(([0-5]?\\d):([0-5]\\d))|([0-5]?\\d)$");
+	
+	var timings = $(".presentation1-slides > img").map(function(index) {
+		if (index != currentSlideIndex) {
+			$(this).css("display", "none");
+		}
+		var parsedTime = time.exec($(this).attr("timing"));
+		
+		if (parsedTime[1] != undefined) {
+			var hour = (+parsedTime[2]);
+			var minutes = (+parsedTime[5]);
+			var seconds = (+parsedTime[6]);
+			return hour * 3600 + minutes * 60 + seconds;
+		}
+		if (parsedTime[7] != undefined) {
+			var minutes = (+parsedTime[8]);
+			var seconds = (+parsedTime[9]);
+			return minutes * 60 + seconds;
+		}
+		return (+parsedTime[10]);
+	}).get();
+	
+	var sortedTimings = new Array();
+	var indexByTimings = new Object();
+	for (var i = 0; i < timings.length; i++) {
+		sortedTimings[i] = timings[i];
+		indexByTimings[timings[i]] = i;
+	}
+	sortedTimings.sort(function(a, b) {
+		return a - b;
+	});
+	
+	function ready(player_id) {
+		var froogaloop = $f(player_id);
+
+		function onPlayProgress() {
+			froogaloop.addEvent('playProgress', function(data) {
+				var i = -1;
+				while (data.seconds > timings[indexByTimings[sortedTimings[i + 1]]]) {
+					i++;
+				}
+				if (currentSlideIndex != indexByTimings[sortedTimings[i]]) {
+					$(".presentation1-slides > img:eq(" + currentSlideIndex + ")").css("display", "none");
+					currentSlideIndex = indexByTimings[sortedTimings[i]];
+					$(".presentation1-slides > img:eq(" + currentSlideIndex + ")").css("display", "block");
+				}
+            });
+		}
+
+		onPlayProgress();
+	}
+});
 </script>
 </body>
 </html>
