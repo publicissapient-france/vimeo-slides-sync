@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>Demo of vimeo-slides-sync project</title>
-<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script>
-<script src="http://a.vimeocdn.com/js/froogaloop2.js" type="text/javascript"></script>
-<script src="http://s3-eu-west-1.amazonaws.com/xebia-video/vimeo-slides-sync-1.0.0.min.js" type="text/javascript"></script>
-</head>
-<body>
-<iframe id="presentation1" src="http://player.vimeo.com/video/35533358?api=1&player_id=presentation1&title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" width="460" height="261" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-<div id="presentation1-slides" style="width: 460px; height: 262px;"></div>
-<style type="text/css">
+ <head>
+  <meta charset="utf-8">
+  <title>Vimeo-slides-sync</title>
+  <meta name="viewport" content="width=600, initial-scale=1.0">
+  <link href="bootstrap-2.0.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="bootstrap-2.0.2/css/bootstrap-responsive.min.css" rel="stylesheet">
+  <script src="bootstrap-2.0.2/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script>
+  <script src="http://a.vimeocdn.com/js/froogaloop2.js" type="text/javascript"></script>
+  <script src="http://s3-eu-west-1.amazonaws.com/xebia-video/vimeo-slides-sync-1.0.0.min.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container">
+   <header class="jumbotron masthead">
+    <div class="page-header">
+     <h1>Vimeo-slides-sync</h1>
+     <p>Synchronize your slides with your video on your web page</p>
+    </div>
+   </header>
+   <div class="row">
+    <div class="span6">
+     <iframe id="presentation1" src="http://player.vimeo.com/video/35533358?api=1&player_id=presentation1&title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" width="460" height="261" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+     <div id="presentation1-slides" style="width: 460px; height: 262px;"></div>
+     <style type="text/css">
 #presentation1-slides > img {
   width: 460px;
   height: 262px;
 }
-</style>
-<script type="text/javascript">
+     </style>
+     <script type="text/javascript">
 $(function() {
   $("#presentation1").vimeoSlidesSync([
     {src:   "mire.jpg", timing:    "0:00"},
@@ -27,6 +40,61 @@ $(function() {
     {src: "slide5.jpg", timing:    "0:16"}
   ]);
 });
-</script>
-</body>
+     </script>
+    </div>
+    <div class="span6">
+     <h2>Steps to go</h2>
+     <ol>
+      <li><strong>Shoot and upload</strong> your video presentation on Vimeo</li>
+      <li><strong>Share your slides</strong> regular images on a web server</li>
+      <li><strong>Synchronize</strong> all things on your web page</li>
+     </ol>
+     <div class="well">Enjoy, it's free</div>
+    </div>
+    <div class="span12">
+     <h2>How to use-it ?</h2>
+     <ol>
+      <li>
+       On the <code>&lt;head&gt;</code> section of the page put the following JavaScript import libraries
+       <pre class="prettyprint linenums">&lt;script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="http://a.vimeocdn.com/js/froogaloop2.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="http://s3-eu-west-1.amazonaws.com/xebia-video/vimeo-slides-sync-1.0.0.min.js" type="text/javascript"&gt;&lt;/script&lt;</pre>
+      </li>
+      <li>
+       Somewhere on your page put the following code :
+       <pre class="prettyprint linenums">&lt;iframe id="presentation1" src="http://player.vimeo.com/video/35533358?api=1&player_id=presentation1&title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" width="460" height="261" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen&gt;&lt;/iframe&gt;
+&lt;div id="presentation1-slides" style="width: 460px; height: 262px;"&gt;&lt;/div>&gt;
+&lt;style type="text/css"&gt;
+#presentation1-slides &gt; img {
+    width: 460px;
+    height: 262px;
+}
+&lt;/style&gt;
+&lt;script type="text/javascript"&gt;
+$(function() {
+  $("#presentation1").vimeoSlidesSync([
+     {src:   "mire.jpg", timing:    "0:00"},
+     {src: "slide1.jpg", timing: "0:00:04"},
+     {src: "slide2.jpg", timing:    "0:08"},
+     {src: "slide4.jpg", timing:    "0:13"},
+     {src: "slide3.jpg", timing:    "0:11"},
+     {src: "slide5.jpg", timing:    "0:16"}
+  ]);
+});
+&lt;/script&gt;</pre>
+       <div class="alert">
+        <code>presentation1</code> is provided as an example of unique identifier of your video, slides and sync datas.
+        You can (should) replace all occurences with an identifier of your own.
+       </div>
+      </li>
+     </ol>
+    </div>
+   </div>
+   <footer class="footer">
+    <p class="pull-right"><a href="#">Back to top</a></p>
+    <p>Project originaly scoped for <a href="http://www.xebia.fr" target="_blank">Xebia Fr</a> by <a href="http://twitter.com/seblm" target="_blank">@seblm</a>.</p>
+    <p>Code licensed under the <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT Licence</a>.</p>
+   </footer>
+  </div>
+ </body>
 </html>
