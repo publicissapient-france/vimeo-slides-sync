@@ -3,3 +3,5 @@ tools/
 .DS_Store
 .project
 vimeo-slides-sync-*.min.js
+*.iml
+
